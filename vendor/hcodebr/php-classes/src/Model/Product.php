@@ -16,6 +16,19 @@ class Product extends Model {
 
 	}
 
+	public static function checkList($list) {
+
+		foreach ($list as &$row) {
+
+			$p = new Product();
+			$p->setData($row);
+			$row = $p->getValues();
+		}
+
+		return $list;
+
+	}
+
 	public function save() {
 
 		$sql = new Sql();
@@ -101,10 +114,10 @@ class Product extends Model {
 				$image = imagecreatefromjpeg($file['tmp_name']);
 				break;
  			case "gif":
-				$image = imageimagecreatefromgif($file['tmp_name']);
+				$image = imagemcreatefromgif($file['tmp_name']);
 				break;
 			case "png":
-				$image = imageimagecreatefrompng($file['tmp_name']);
+				$image = imagecreatefrompng($file['tmp_name']);
 				break;
 		}
 
