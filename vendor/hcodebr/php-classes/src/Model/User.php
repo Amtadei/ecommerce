@@ -289,11 +289,27 @@ class User extends Model {
 
 	}
 
+	public static function setErrorRegister($msg) {
+
+		$_SESSION[User::ERROR_REGISTER] = $msg;
+
+	}
+
 	public static function getError() {
 
 		$msg = (isset($_SESSION[User::ERROR]) && $_SESSION[User::ERROR]) ? $_SESSION[User::ERROR] : '';
 
 		User::clearError();
+
+		return $msg;
+
+	}
+
+	public static function getErrorRegister() {
+
+		$msg = (isset($_SESSION[User::ERROR_REGISTER]) && $_SESSION[User::ERROR_REGISTER]) ? $_SESSION[User::ERROR_REGISTER] : '';
+
+		User::clearErrorRegister();
 
 		return $msg;
 
@@ -305,9 +321,9 @@ class User extends Model {
 
 	}
 
-	public static function setErrorRegister($msg) {
+	public static function clearErrorRegister() {
 
-		$_SESSION[User::ERROR_REGISTER] = $msg;
+		$_SESSION[User::ERROR_REGISTER] = NULL;
 
 	}
 
@@ -317,7 +333,7 @@ class User extends Model {
 
 		$results = $sql->select("SELECT * FROM db_ecommerce.tb_users WHERE deslogin = :deslogin", [
 			':deslogin'=>$login
-		])
+		]);
 
 		return (count($results) > 0);
 
@@ -325,7 +341,7 @@ class User extends Model {
 
 	public static function getPassordHash($password) {
 
-		return password_hash($passowrd, PASSWORD_DEFAULT, [
+		return password_hash($password, PASSWORD_DEFAULT, [
 			'cost'=>12
 		]);
 
