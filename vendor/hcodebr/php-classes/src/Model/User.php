@@ -127,7 +127,7 @@ class User extends Model {
 		$results = $sql-> select("CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
 				":desperson"=>utf8_decode($this->getdesperson()),
 				":deslogin"=>$this->getdeslogin(),
-				":despassword"=>User::getPassordHash($this->getdespassword()),
+				":despassword"=>User::getPasswordHash($this->getdespassword()),
 				":desemail"=>$this->getdesemail(),
 				":nrphone"=>$this->getnrphone(),
 				":inadmin"=>$this->getinadmin()
@@ -160,7 +160,7 @@ class User extends Model {
 			 	":iduser"=>$this->getiduser(),
 				":desperson"=>utf8_decode($this->getdesperson()),
 				":deslogin"=>$this->getdeslogin(),
-				":despassword"=>User::getPassordHash($this->getdespassword()),
+				":despassword"=>User::getPasswordHash($this->getdespassword()),
 				":desemail"=>$this->getdesemail(),
 				":nrphone"=>$this->getnrphone(),
 				":inadmin"=>$this->getinadmin()
@@ -243,6 +243,7 @@ class User extends Model {
 		define('SECRET_IV', pack('a16','senha'));
 		define('SECRET', pack('a16','senha'));
 
+		// Por algum motivo que desconheço o sinal de + na URL vem como branco
 		$code = str_replace(' ','+', $code);
 
 		$idrecovery = openssl_decrypt($code,'AES-128-CBC', SECRET,	0,	SECRET_IV);
@@ -370,7 +371,7 @@ class User extends Model {
 
 	}
 
-	public static function getPassordHash($password) {
+	public static function getPasswordHash($password) {
 
 		return password_hash($password, PASSWORD_DEFAULT, [
 			'cost'=>12
