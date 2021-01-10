@@ -35,7 +35,7 @@ class Order extends Model {
 
 		$sql = new Sql();
 
-		$results = $sql-> select("
+		$results = $sql->select("
 			SELECT * 
 			FROM db_ecommerce.tb_orders a
 			INNER JOIN db_ecommerce.tb_ordersstatus b USING (idstatus)
