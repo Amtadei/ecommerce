@@ -8,6 +8,7 @@ use \Hcode\Mailer;
 
 class User extends Model {
 
+	const SUCCESS = "UserSuccess";
 	const SESSION = "User";
 	const ERROR = "UserError";
 	const ERROR_REGISTER = "UserErrorRegister";
@@ -291,6 +292,12 @@ class User extends Model {
 
 	}
 
+	public static function setSuccess($msg) {
+
+		$_SESSION[User::SUCCESS] = $msg;
+
+	}
+
 	public static function setError($msg) {
 
 		$_SESSION[User::ERROR] = $msg;
@@ -300,6 +307,16 @@ class User extends Model {
 	public static function setErrorRegister($msg) {
 
 		$_SESSION[User::ERROR_REGISTER] = $msg;
+
+	}
+
+	public static function getSuccess() {
+
+		$msg = (isset($_SESSION[User::SUCCESS]) && $_SESSION[User::SUCCESS]) ? $_SESSION[User::SUCCESS] : '';
+
+		User::clearSuccess();
+
+		return $msg;
 
 	}
 
@@ -320,6 +337,12 @@ class User extends Model {
 		User::clearErrorRegister();
 
 		return $msg;
+
+	}
+
+	public static function clearSuccess() {
+
+		$_SESSION[User::SUCCESS] = NULL;
 
 	}
 
