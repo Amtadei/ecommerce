@@ -177,7 +177,7 @@ class User extends Model {
 
 	}
 
-	public static function getForgot($email) {
+	public static function getForgot($email, $inadmin = true) {
 
 		define('SECRET_IV', pack('a16','senha'));
 		define('SECRET', pack('a16','senha'));
@@ -209,11 +209,17 @@ class User extends Model {
 			{
 				$dataRecovery = $results2[0];
 
+				$code = openssl_encrypt($dataRecovery["idrecovery"], 'AES-128-CBC', SECRET, 0,	SECRET_IV);
 
+				if ($inadmin === true) {
 
-				$code = openssl_encrypt(json_encode($dataRecovery["idrecovery"]), 'AES-128-CBC', SECRET, 0,	SECRET_IV);
+					$link = "http://www.asserthy-ecommerce.com.br/admin/forgot/reset?code=$code";
 
-				$link = "http://www.asserthy-ecommerce.com.br/admin/forgot/reset?code=$code";
+				} else {
+
+					$link = "http://www.asserthy-ecommerce.com.br/forgot/reset?code=$code";
+
+				}
 
 				$mailer = new Mailer($data["desemail"], $data["desperson"], "Redefinir senha da Asserthy Store", 
 					"forgot", array(
@@ -236,8 +242,10 @@ class User extends Model {
 		define('SECRET_IV', pack('a16','senha'));
 		define('SECRET', pack('a16','senha'));
 
-		$idrecovery = json_decode(openssl_decrypt($code,'AES-128-CBC', SECRET,	0,	SECRET_IV));
-		
+		$code = str_replace(' ','+', $code);
+
+		$idrecovery = openssl_decrypt($code,'AES-128-CBC', SECRET,	0,	SECRET_IV);
+
 		$sql = new Sql();
 
 		$results = $sql->select("SELECT * 
