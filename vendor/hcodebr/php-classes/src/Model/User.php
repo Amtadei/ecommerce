@@ -399,7 +399,7 @@ class User extends Model {
 
 	}
 
-	public static function getUsersPage($page = 1, $itensPerPage = 10) {
+	public static function getPage($page = 1, $itensPerPage = 10) {
 
 		$start = ($page -1) * $itensPerPage;
 
@@ -422,7 +422,7 @@ class User extends Model {
 
 	}
 
-	public static function getUsersPageSearch($search, $page = 1, $itensPerPage = 10) {
+	public static function getPageSearch($search, $page = 1, $itensPerPage = 10) {
 
 		$start = ($page -1) * $itensPerPage;
 
